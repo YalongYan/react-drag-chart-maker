@@ -1,6 +1,15 @@
-# react-drag-chart-makers
+# umi project
 
+## Getting Started
 
+Install dependencies,
 
+```bash
+$ yarn
+```
 
-x
+Start the dev server,
+
+```bash
+$ yarn start
+```
