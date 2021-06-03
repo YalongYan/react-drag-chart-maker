@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'dva';
+import { connect, useDispatch } from 'dva';
 import styles from './index.less';
 
-const IndexPage = () => {
+const IndexPage = (props: any) => {
+  console.log(props);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // dispatch({
+    //   type: 'data_newer/fetchBriefCard',
+    //   payload: {},
+    // });
+    dispatch({
+      type: 'global/fetchUndepControls',
+      payload: { lists: [4, 5, 6] },
+    });
+  }, []);
   return (
     <div>
       <h1 className={styles.title}>Page index</h1>
@@ -13,7 +25,7 @@ const IndexPage = () => {
 const mapStateToProps = (state: any) => {
   console.log(state);
   return {
-    menuData: state.global.menuData,
+    list: state.global.list,
   };
 };
 
