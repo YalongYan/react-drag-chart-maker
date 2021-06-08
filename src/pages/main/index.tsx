@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'dva';
-import styles from './index.less';
+
+import LeftComponentList from '@/components/leftComponentList';
+
+import './index.less';
 
 const IndexPage = (props: any) => {
   console.log(props);
   const dispatch = useDispatch();
   useEffect(() => {
     // dispatch({
-    //   type: 'data_newer/fetchBriefCard',
-    //   payload: {},
+    //   type: 'global/fetchUndepControls',
+    //   payload: { lists: [4, 5, 6] },
     // });
-    dispatch({
-      type: 'global/fetchUndepControls',
-      payload: { lists: [4, 5, 6] },
-    });
   }, []);
   return (
     <div>
-      <h1 className={styles.title}>Page index</h1>
+      {/* 左侧组件列表 */}
+      <LeftComponentList />
     </div>
   );
 };
