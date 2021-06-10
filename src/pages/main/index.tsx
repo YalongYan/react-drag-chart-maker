@@ -1,31 +1,91 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'dva';
 
+import { deepCopy } from '@/utils/utils';
+import generateID from '@/utils/generateID';
+import componentList from '@/custom-component/componentList';
+
 import LeftComponentList from '@/components/leftComponentList';
+import Editor from '@/components/Editor/Main';
 
 import './index.less';
-
-const IndexPage = (props: any) => {
-  console.log(props);
+const IndexPage: React.FC = (props: any) => {
   const dispatch = useDispatch();
+
+  console.log(props);
+  // const { componentData } = props
+
   useEffect(() => {
     // dispatch({
     //   type: 'global/fetchUndepControls',
     //   payload: { lists: [4, 5, 6] },
     // });
   }, []);
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let index: number = parseInt(e.dataTransfer.getData('index'));
+    const component = deepCopy(componentList[index]);
+    component.style.top = e.nativeEvent.offsetX;
+    component.style.left = e.nativeEvent.offsetX;
+    component.id = generateID();
+    dispatch({
+      type: 'global/addComponent',
+      payload: { component },
+    });
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // 改变拖拽的鼠标手势
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    // this.$store.commit('setClickComponentStatus', false)
+  };
+  const deselectCurComponent = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    // if (!this.isClickComponent) {
+    //   this.$store.commit('setCurComponent', { component: null, index: null })
+    // }
+    // // 0 左击 1 滚轮 2 右击
+    // if (e.button != 2) {
+    //     this.$store.commit('hideContextMenu')
+    // }
+  };
+
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       {/* 左侧组件列表 */}
       <LeftComponentList />
+
+      {/* 中间画布 */}
+      <div className="center">
+        <div
+          className="content"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onMouseDown={(e) => {
+            handleMouseDown(e);
+          }}
+          onMouseUp={(e) => {
+            deselectCurComponent(e);
+          }}
+        >
+          <Editor />
+        </div>
+      </div>
     </div>
   );
 };
 
 const mapStateToProps = (state: any) => {
-  console.log(state);
+  // console.log(state);
   return {
-    list: state.global.list,
+    componentData: state.global.componentData,
   };
 };
 

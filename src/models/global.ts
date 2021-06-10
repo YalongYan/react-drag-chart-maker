@@ -31,25 +31,53 @@ const GlobalModel: GlobalModelProp = {
   namespace: 'global',
   state: InitialGlobalState,
   effects: {
-    // 批量获取控件列表
-    fetchUndepControls: function* (
-      { payload: { lists = [] } },
+    addComponent: function* (
+      { payload: { component, index } },
       { call, put, select },
     ) {
-      console.log(lists);
-      // const controls = yield select(undepControlSelectors);
-      // const emptyLists: string[] = [];
       yield put({
-        type: 'updateUndepControls',
-        payload: { list: lists },
+        type: 'handleAddComponent',
+        payload: { component, index },
       });
+      //   addComponent(state, { component, index }) {
+      //     if (index !== undefined) {
+      //         state.componentData.splice(index, 0, component)
+      //     } else {
+      //         state.componentData.push(component)
+      //     }
+      // },
     },
+    // // 批量获取控件列表
+    // fetchUndepControls: function* (
+    //   { payload: { lists = [] } },
+    //   { call, put, select },
+    // ) {
+    //   console.log(lists);
+    //   // const controls = yield select(undepControlSelectors);
+    //   // const emptyLists: string[] = [];
+    //   yield put({
+    //     type: 'updateUndepControls',
+    //     payload: { list: lists },
+    //   });
+    // },
   },
   reducers: {
-    updateUndepControls: function (state = InitialGlobalState, action) {
-      console.log({ ...state, list: { ...action.payload.lists } });
-      return { ...state, ...{ list: action.payload.list } };
+    handleAddComponent: function (state, { payload }) {
+      const { component, index } = payload;
+      const { componentData } = state;
+      const arr = JSON.parse(JSON.stringify(componentData));
+
+      if (index !== undefined) {
+        arr.splice(index, 0, component);
+      } else {
+        arr.push(component);
+      }
+      return { ...state, ...{ componentData: arr } };
     },
+    // updateUndepControls: function (state = InitialGlobalState, action) {
+    //   console.log({ ...state, list: { ...action.payload.lists } });
+    //   return { ...state, ...{ list: action.payload.list } };
+    // },
   },
   subscriptions: {},
 };

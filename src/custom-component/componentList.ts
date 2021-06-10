@@ -12,7 +12,7 @@ const list = [
     },
   },
   {
-    iconUrl: require('@/static/img/2.gif'),
+    iconUrl: require('@/static/img/3.png'),
     requestUrl: 'http:yidian-inc.com/getList',
     style: {
       width: 300,
