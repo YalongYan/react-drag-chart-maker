@@ -5,8 +5,8 @@ import { deepCopy } from '@/utils/utils';
 import generateID from '@/utils/generateID';
 import componentList from '@/custom-component/componentList';
 
-import LeftComponentList from '@/components/leftComponentList';
-import Editor from '@/components/Editor/Main';
+import LeftComponentList from '@/components/LeftComponentList';
+import Editor from '@/components/CenterEditor/Main';
 
 import './index.less';
 const IndexPage: React.FC = (props: any) => {
@@ -27,9 +27,10 @@ const IndexPage: React.FC = (props: any) => {
     e.stopPropagation();
     let index: number = parseInt(e.dataTransfer.getData('index'));
     const component = deepCopy(componentList[index]);
-    component.style.top = e.nativeEvent.offsetX;
+    component.style.top = e.nativeEvent.offsetY;
     component.style.left = e.nativeEvent.offsetX;
     component.id = generateID();
+    console.log(component);
     dispatch({
       type: 'global/addComponent',
       payload: { component },
@@ -58,7 +59,7 @@ const IndexPage: React.FC = (props: any) => {
   };
 
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex', height: '100%' }}>
       {/* 左侧组件列表 */}
       <LeftComponentList />
 
@@ -68,16 +69,17 @@ const IndexPage: React.FC = (props: any) => {
           className="content"
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          onMouseDown={(e) => {
-            handleMouseDown(e);
-          }}
-          onMouseUp={(e) => {
-            deselectCurComponent(e);
-          }}
+          // onMouseDown={(e) => {
+          //   handleMouseDown(e);
+          // }}
+          // onMouseUp={(e) => {
+          //   deselectCurComponent(e);
+          // }}
         >
           <Editor />
         </div>
       </div>
+      <div style={{ width: '260px' }}>dsdsdsdsdsd</div>
     </div>
   );
 };

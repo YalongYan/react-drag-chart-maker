@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'dva';
 
-import Grid from '@/components/Editor/Grid';
-
+import Grid from '@/components/CenterEditor/Grid';
+import CenterItem from '@/components/CenterItem';
 import './index.less';
 
 interface propType {
@@ -12,7 +12,7 @@ interface propType {
 const Index: React.FC<propType> = (props) => {
   const { componentData } = props;
   useEffect(() => {
-    console.log(componentData);
+    // console.log(componentData);
   }, [componentData]);
 
   const handleMouseDown = () => {};
@@ -20,16 +20,9 @@ const Index: React.FC<propType> = (props) => {
     <div className="editor" id="editor" onMouseDown={handleMouseDown}>
       <Grid />
       {/* 页面组件列表展示 */}
-      {/* <component
-                v-else
-                class="component"
-                :is="item.component"
-                :style="getComponentStyle(item.style)"
-                :propValue="item.propValue"
-                @input="handleInput"
-                :element="item"
-                :id="'component' + item.id"
-            /> */}
+      {componentData?.map((item, index) => {
+        return <CenterItem key={index} subData={item} />;
+      })}
     </div>
   );
 };
